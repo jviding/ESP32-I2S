@@ -12,9 +12,9 @@ const i2s_std_config_t I2S::std_conf = {
   .slot_cfg = I2S_STD_MSB_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_8BIT, I2S_SLOT_MODE_MONO),
   .gpio_cfg = {
       .mclk = I2S_GPIO_UNUSED,
-      .bclk = GPIO_NUM_4,
-      .ws = GPIO_NUM_5,
-      .dout = GPIO_NUM_18,
+      .bclk = PIN_BCLK,
+      .ws = PIN_WS,
+      .dout = PIN_DOUT,
       .din = I2S_GPIO_UNUSED,
       .invert_flags = {
           .mclk_inv = false,
@@ -42,7 +42,7 @@ void I2S::write() {
 
   // Transferred as:
   // ..., 0x01 0x01, 0x03 0x03, 0x05 0x05, 0x01 0x01, ...
-  // Where 1 byte transferred each WS low
+  // Where 1 byte transferred each WS low (I2S_DATA_BIT_WIDTH_8BIT)
 
   i2s_channel_write(tx_handle, buffer, buffer_size, bytes_written, portMAX_DELAY);
   free(buffer);
