@@ -32,7 +32,7 @@ void I2S::init() {
 };
 
 void I2S::write() {
-  int buffer_size = 3;
+  size_t buffer_size = 3;
   size_t *bytes_written = 0;
   uint8_t *buffer = (uint8_t *)heap_caps_malloc(buffer_size, MALLOC_CAP_DMA | MALLOC_CAP_8BIT);
 
