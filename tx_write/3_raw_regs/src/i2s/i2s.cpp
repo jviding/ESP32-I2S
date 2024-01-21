@@ -150,8 +150,6 @@ void I2S::fifo_send_data() {
   }
   // TX stop
   CLEAR_PERI_REG_MASK(I2S_CONF_REG(0), I2S_TX_START);
-  // Read interrupts
-  uint32_t d = READ_PERI_REG(I2S_INT_ST_REG(0));
   // Clear interrupt
   SET_PERI_REG_MASK(I2S_INT_CLR_REG(0), I2S_TX_REMPTY_INT_CLR);
 }
