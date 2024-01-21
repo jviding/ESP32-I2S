@@ -50,3 +50,41 @@ void I2S_Regs::print_all() {
   print_PDM_registers();
   print_interrupt_registers();
 };
+
+uint16_t I2S_Regs::get_DW0_size(uint32_t dw0) {
+  uint32_t mask = 0x00000FFF; // [11:0]
+  return dw0 & mask;
+};
+
+uint16_t I2S_Regs::get_DW0_length(uint32_t dw0) {
+  uint32_t mask = 0x00FFF000; // [23:11]
+  return (dw0 & mask) >> 12;
+};
+
+void I2S_Regs::print_DMA_descriptor(uint32_t* ptr) {
+  printf("\n## DMA Descriptor ##\n");
+  printf("DW0 ... 0x%lx\n", *ptr);
+  printf("DW1 ... 0x%lx\n", *(ptr+1));
+  printf("DW2 ... 0x%lx\n", *(ptr+2));
+  printf("\n## DMA Descriptor - DW0 ##\n");
+  uint16_t size = get_DW0_size(*ptr);
+  uint16_t length = get_DW0_length(*ptr);
+  printf("Size [11:0] ...... 0x%x = %d bytes\n", size, size);
+  printf("Length [23:11] ... 0x%x = %d bytes\n\n", length, length);
+};
+
+void I2S_Regs::print_DMA_buffer(uint32_t* ptr) {
+  uint16_t length = get_DW0_length(*ptr);
+  uint32_t* buff_ptr = (uint32_t*)(*(ptr + 1));
+  printf("\n## DMA Buffer ##\n");
+  for (uint16_t a = 0; a < length/4; a ++) {
+    printf("Buffer[%d] ... 0x%08lx\n", a, *(buff_ptr + a));
+  }
+  printf("\n"); 
+}
+
+void I2S_Regs::print_DMA_outlink(uintptr_t outlink_addr) {
+  uint32_t* desc_ptr = (uint32_t*)outlink_addr;
+  print_DMA_descriptor(desc_ptr);
+  print_DMA_buffer(desc_ptr);
+};
