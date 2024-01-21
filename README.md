@@ -8,6 +8,7 @@ Each subproject builds on top of the previous, going deeper.
 
 Scope is recommended, to be able to observe the signals.
 
+
 # TX
 
 ## 1_std
@@ -30,3 +31,10 @@ FIFO mode, with manual GPIO Mux configuration.
 
 Extending from FIFO to FIFO DMA (burst) mode.
 Uses a single DMA descriptor and buffer.
+
+## 5_dma_isr
+
+Extending FIFO DMA with linked buffers.
+
+
+# RX
