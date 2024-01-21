@@ -19,8 +19,8 @@ extern "C" {
 void app_main() {
   I2S::init();
   while(1) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
-    //I2S::write();
-    I2S_Regs::print_all();
+    vTaskDelay(pdMS_TO_TICKS(500));
+    I2S::write();
+    //I2S_Regs::print_all();
   }
 };
