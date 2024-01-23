@@ -16,6 +16,8 @@ public:
 private:
   // Variables
   static SemaphoreHandle_t tx_handle;
+  static SemaphoreHandle_t isr_handle;
+  static intr_handle_t intr_handle;
 
   // Functions
   static void reset();
@@ -29,6 +31,6 @@ private:
 
   static void fifo_dma_set_data(size_t rows, size_t cols, uint16_t samples[]);
   static void fifo_dma_start();
-  static void fifo_dma_stop();
+  static void IRAM_ATTR fifo_dma_stop_ISR(void* arg);
   static void fifo_dma_send_data();
 };

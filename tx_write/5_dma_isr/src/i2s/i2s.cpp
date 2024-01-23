@@ -13,6 +13,8 @@
 
 
 SemaphoreHandle_t I2S::tx_handle;
+SemaphoreHandle_t I2S::isr_handle;
+intr_handle_t I2S::intr_handle;
 
 
 void I2S::reset() {
@@ -34,8 +36,9 @@ void I2S::reset() {
 void I2S::enable() {
   // Enable the i2s peripheral
   periph_module_enable(PERIPH_I2S0_MODULE);
-  // Create semaphore for TX
+  // Create semaphores for TX and ISR
   tx_handle = xSemaphoreCreateBinary();
+  isr_handle = xSemaphoreCreateBinary();
   // Enable the semaphore for use
   xSemaphoreGive(tx_handle);
   // Reset interfaces
@@ -120,7 +123,8 @@ void I2S::fifo_dma_set_data(size_t rows, size_t cols, uint16_t samples[]) {
   uint32_t outlink_addr = (uint32_t)DMA::init(rows, cols, samples);
   // Set outlink address
   SET_PERI_REG_BITS(I2S_OUT_LINK_REG(0), I2S_OUTLINK_ADDR, outlink_addr, I2S_OUTLINK_ADDR_S);
-  I2S_Regs::print_DMA_outlink(outlink_addr, true);
+  // Print descriptors & buffers
+  //I2S_Regs::print_DMA_outlink(outlink_addr, true);
 };
 
 void I2S::fifo_dma_start() {
@@ -131,23 +135,34 @@ void I2S::fifo_dma_start() {
   SET_PERI_REG_MASK(I2S_CONF_REG(0), I2S_TX_START);
 };
 
-void I2S::fifo_dma_stop() {
+void IRAM_ATTR I2S::fifo_dma_stop_ISR(void* arg) {
   // Stop TX transmitter
   CLEAR_PERI_REG_MASK(I2S_CONF_REG(0), I2S_TX_START);
   // Stop DMA
   SET_PERI_REG_MASK(I2S_OUT_LINK_REG(0), I2S_OUTLINK_STOP);
   CLEAR_PERI_REG_MASK(I2S_CONF_REG(0), I2S_OUTLINK_START);
+  // Clear interrupt
+  SET_PERI_REG_MASK(I2S_INT_CLR_REG(0), I2S_OUT_EOF_INT_ENA);
+  // Signal ISR ready
+  xSemaphoreGiveFromISR(isr_handle, NULL);
 };
 
 void I2S::fifo_dma_send_data() {
+  // Stop transmit upon EOF interrupt
+  esp_intr_alloc(ETS_I2S0_INTR_SOURCE, 0, (intr_handler_t)I2S::fifo_dma_stop_ISR, nullptr, &intr_handle);
+  // Start transmit
   fifo_dma_start();
-  while (REG_GET_FIELD(I2S_INT_ST_REG(0), I2S_OUT_EOF_INT_ENA) == 0) {
-    ; // Wait for TX empty
-  }
-  fifo_dma_stop();
-  // I2S_Regs::print_interrupt_registers();
-  // Clear interrupt
-  SET_PERI_REG_MASK(I2S_INT_CLR_REG(0), I2S_OUT_EOF_INT_ENA);
+  // Wait until ISR signals complete
+  while (1) {
+    // CPU non-blocking wait
+    if (xSemaphoreTake(isr_handle, pdMS_TO_TICKS(10)) == pdTRUE) {
+      break;
+    }
+  };
+  // Release the ISR
+  esp_intr_free(intr_handle);
+  // Print INT registers
+  //I2S_Regs::print_interrupt_registers();
   // Free DMA buffers
   DMA::deinit();
 };

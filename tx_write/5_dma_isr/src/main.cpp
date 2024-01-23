@@ -17,8 +17,11 @@ extern "C" {
 
 void app_main() {
   I2S::init();
+  uint32_t index = 1;
   while(1) {
     vTaskDelay(pdMS_TO_TICKS(1000));
+    printf("\nSend %ld\n", index);
     I2S::write();
+    index++;
   }
 };
