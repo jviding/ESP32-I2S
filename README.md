@@ -35,6 +35,6 @@ Uses a single DMA descriptor and buffer.
 ## 5_dma_isr
 
 Extending FIFO DMA with linked buffers.
+TX stop is switched to using an interrupt routine.
 
 
-# RX
