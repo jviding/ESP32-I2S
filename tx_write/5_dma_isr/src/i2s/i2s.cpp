@@ -54,13 +54,13 @@ void I2S::clear_defaults() {
 
 void I2S::configure_clock() {
   // I2S PERIPHERAL CLOCK
-  // Base Clock = (ESP32 System Clock / (C + A/C)) * B
-  uint16_t div_a = 1;     // A = div_a
-  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_A, div_a, I2S_CLKM_DIV_A_S);
-  uint16_t div_b = 0;     // B = (1 << div_b)
-  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_B, div_b, I2S_CLKM_DIV_B_S);
-  uint16_t div_num = 79;  // C = (div_num + 8)
-  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_NUM, div_num, I2S_CLKM_DIV_NUM_S);
+  // Base Clock = ESP32 System Clock / (n + b/a)
+  uint16_t a = 1;
+  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_A, a, I2S_CLKM_DIV_A_S);
+  uint16_t b = 0; 
+  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_B, b, I2S_CLKM_DIV_B_S);
+  uint16_t n = 79;
+  SET_PERI_REG_BITS(I2S_CLKM_CONF_REG(0), I2S_CLKM_DIV_NUM, n, I2S_CLKM_DIV_NUM_S);
   // BIT CLOCK
   // Sample Rate = Base Clock / div_clk
   uint16_t div_clk = 2;   // In Master mode >=2 because 1 BCLK tick takes 2 Base Clock ticks
