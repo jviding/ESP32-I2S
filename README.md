@@ -9,12 +9,12 @@ Each subproject builds on top of the previous, going deeper.
 Scope is recommended, to be able to observe the signals.
 
 
-# TX
+# TX Master
 
 ## 1_std
 
 Kick-off with a minimalistic configuration, using the I2S high-level API.
-The purpose is to verify the I2S TX transmitter produces output.
+The purpose is to verify the I2S TX transmitter produces output as Master.
 
 ## 2_std_mod
 
@@ -37,4 +37,12 @@ Uses a single DMA descriptor and buffer.
 Extending FIFO DMA with linked buffers.
 TX stop is switched to using an interrupt routine.
 
+
+# TX Slave
+
+## 6_std
+
+Kick-off with a minimalistic configuration, using the I2S high-level API.
+The purpose is to verify the I2S TX transmitter produces output as Slave.
+Both BCK and WS are taken as input from the Master.
 
