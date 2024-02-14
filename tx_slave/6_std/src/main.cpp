@@ -18,7 +18,7 @@ extern "C" {
 /*
  * Note: Memory is not properly aligned on the I2S interface.
  * To verify transmission with an oscilloscope, use trigger on the data channel.
- * Because there are quite some "empty" transmissions...
+ * Because there might be some "empty" transmissions...
 */
 void app_main() {
   I2S::init();
