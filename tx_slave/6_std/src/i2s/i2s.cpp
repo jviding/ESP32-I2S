@@ -1,5 +1,6 @@
 #include "i2s.h"
 #include "driver/i2s.h"
+#include "../i2s_regs/i2s_regs.h"
 #include <stdio.h>
 
 
@@ -45,4 +46,6 @@ void I2S::write() {
   // Send data
   size_t bytes_written = 0;
   i2s_write(I2S_NUM_0, audio_data, sizeof(audio_data), &bytes_written, portMAX_DELAY);
+  // Print registers
+  I2S_Regs::print_all();
 };
