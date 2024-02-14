@@ -27,12 +27,14 @@ void I2S_Regs::print_configuration_registers() {
 
 void I2S_Regs::print_DMA_registers() {
   printf("\n*** DMA REGISTERS ***\n");
+  printf("I2S_LC_CONF_REG ........ 0x%lx\n", READ_PERI_REG(I2S_LC_CONF_REG(0)));
   printf("Not implemented\n\n");
 };
 
 void I2S_Regs::print_PDM_registers() {
   printf("\n*** PULSE DENSITY (DE) MODULATION REGISTERS ***\n");
-  printf("Not implemented\n\n");
+  printf("I2S_PDM_CONF_REG ....... 0x%lx\n", READ_PERI_REG(I2S_PDM_CONF_REG(0)));
+  printf("I2S_PDM_FREQ_CONF_REG .. 0x%lx\n\n", READ_PERI_REG(I2S_PDM_FREQ_CONF_REG(0)));
 };
 
 void I2S_Regs::print_interrupt_registers() {
