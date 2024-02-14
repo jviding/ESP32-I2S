@@ -46,3 +46,9 @@ Kick-off with a minimalistic configuration, using the I2S high-level API.
 The purpose is to verify the I2S TX transmitter produces output as Slave.
 Both BCK and WS are taken as input from the Master.
 
+## 7_std_gpio
+
+Switching Gpio configuration to a low-level API.
+The purpose is to verify the Gpio Mux signal configuration for BCK and WS.
+
+
