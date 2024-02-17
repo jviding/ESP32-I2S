@@ -28,6 +28,9 @@ void I2S_Regs::print_configuration_registers() {
 void I2S_Regs::print_DMA_registers() {
   printf("\n*** DMA REGISTERS ***\n");
   printf("I2S_LC_CONF_REG ........ 0x%lx\n", READ_PERI_REG(I2S_LC_CONF_REG(0)));
+  printf("I2S_RXEOF_NUM_REG ...... 0x%lx\n", READ_PERI_REG(I2S_RXEOF_NUM_REG(0)));
+  printf("I2S_OUT_LINK_REG ....... 0x%lx\n", READ_PERI_REG(I2S_OUT_LINK_REG(0)));
+  printf("I2S_IN_LINK_REG ........ 0x%lx\n", READ_PERI_REG(I2S_IN_LINK_REG(0)));
   printf("Not implemented\n\n");
 };
 
