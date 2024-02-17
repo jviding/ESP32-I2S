@@ -14,28 +14,27 @@ Scope is recommended, to be able to observe the signals.
 ## 1_std
 
 Kick-off with a minimalistic configuration, using the I2S high-level API.
-The purpose is to verify the I2S TX transmitter produces output as Master.
+Verify the I2S TX transmitter produces output as Master.
 
 ## 2_std_mod
 
-Rewriting some default configurations, still with the high-level API.
-The purpose is to observe how the different parameters influence output.
+Expanded configurations, with the high-level API.
+Observing how different parameters affect the output.
 
 ## 3_raw_regs
 
-Switching from the high-level API to low-level API.
-Implementation of the previous functionality with direct register access.
-FIFO mode, with manual GPIO Mux configuration.
+Switch to a low-level API, using direct register access.
+FIFO mode, with also GPIO Mux configured on lower level.
 
 ## 4_fifo_dma
 
-Extending from FIFO to FIFO DMA (burst) mode.
-Uses a single DMA descriptor and buffer.
+Switch to FIFO DMA (burst) mode.
+Single DMA descriptor and buffer.
 
 ## 5_dma_isr
 
-Extending FIFO DMA with linked buffers.
-TX stop is switched to using an interrupt routine.
+Use FIFO DMA with linked buffers.
+Use an interrupt routine to handle TX EOF.
 
 
 # TX Slave
@@ -43,12 +42,19 @@ TX stop is switched to using an interrupt routine.
 ## 6_std
 
 Kick-off with a minimalistic configuration, using the I2S high-level API.
-The purpose is to verify the I2S TX transmitter produces output as Slave.
-Both BCK and WS are taken as input from the Master.
+Verify the I2S TX transmitter produces output in Slave mode.
+Both BCK and WS are taken as input from Master.
 
 ## 7_std_gpio
 
-Switching Gpio configuration to a low-level API.
-The purpose is to verify the Gpio Mux signal configuration for BCK and WS.
+Switch Gpio configuration to a low-level API.
+Verify the GPIO Mux configuration for BCK and WS.
+
+## 8_std_dma
+
+Switch transmit to a low-level API.
+FIFO DMA mode, with interrupt routine to handle TX EOF.
+
+
 
 
